@@ -1,5 +1,6 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { User } from './user.entity';
 
 @Controller('users')
 export class UsersController {
@@ -20,6 +21,21 @@ export class UsersController {
     @Get('/name/:name')
     findByName(@Param('name') name: string) {
         return this.userService.findByName(name);
+    }
+
+    @Post()
+    create(@Body() user: User) {
+        return this.userService.create(user);
+    }
+
+    @Put(':id')
+    update(@Param('id') id: string, @Body() user: User) {
+        return this.userService.update(Number(id), user);
+    }
+
+    @Delete(':id')
+    remove(@Param('id') id: string) {
+        return this.userService.remove(Number(id));
     }
 
 }
