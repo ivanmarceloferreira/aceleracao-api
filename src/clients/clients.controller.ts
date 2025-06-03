@@ -28,7 +28,9 @@ export class ClientsController {
     if (!client.name || !client.cpfCnpj || !client.birthDate) {
       throw new Error('Name, CPF/CNPJ, and Birth Date are required fields.');
     }
-    
+
+    // Validar se o CPF/CNPJ tem mais que 11 dígitos e menos que 14
+
     return this.clientService.create(client);
   }
 
