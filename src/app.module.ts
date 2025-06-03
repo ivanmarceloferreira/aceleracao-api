@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { ClientsModule } from './clients/clients.module';
 import { ProductsModule } from './products/products.module';
+import { SalesModule } from './sales/sales.module';
 
 @Module({
   imports: [
@@ -16,11 +17,12 @@ import { ProductsModule } from './products/products.module';
       password: '',
       database: 'aceleracao',
       autoLoadEntities: true,
-      synchronize: true // apenas em desenvolvimento
+      synchronize: true, // apenas em desenvolvimento
     }),
     UsersModule,
     ClientsModule,
     ProductsModule,
+    SalesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

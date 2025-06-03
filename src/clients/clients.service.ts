@@ -19,8 +19,8 @@ export class ClientsService {
     return this.clientRepository.find();
   }
 
-  findOne(id: number) {
-    return this.clientRepository.findOneBy({ id });
+  async findOne(id: number) {
+    return await this.clientRepository.findOneBy({ id });
   }
 
   findByName(name: string) {
