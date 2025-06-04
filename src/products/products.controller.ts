@@ -11,6 +11,7 @@ import { ProductsService } from './products.service';
 import { Product } from './product.entity';
 import { CreateProductDto } from './create-product.dto';
 import { CategoriesService } from 'src/categories/categories.service';
+import { UpdateProductDto } from './update-product.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -42,9 +43,9 @@ export class ProductsController {
     }
 
     const category = await this.categoryService.findOne(createProductDto.categoryId);
-        if (!category) {
-            throw new Error('Category not found.');
-        }
+    if (!category) {
+        throw new Error('Category not found.');
+    }
 
     const product = new Product();
     product.name = createProductDto.name;
@@ -56,7 +57,23 @@ export class ProductsController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() product: Product) {
+  async update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
+
+    const product = await this.productService.findOne(Number(id));
+    if (!product) {
+      throw new Error('Product does not exist');
+    }
+
+    const category = await this.categoryService.findOne(updateProductDto.categoryId);
+    if (!category) {
+        throw new Error('Category not found.');
+    }
+
+    product.name = updateProductDto.name;
+    product.price = updateProductDto.price;
+    product.description = updateProductDto.description;
+    product.category = category;
+
     return this.productService.update(Number(id), product);
   }
 
