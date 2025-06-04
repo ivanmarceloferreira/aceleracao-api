@@ -31,4 +31,5 @@ export class ProductsController {
   remove(@Param('id') id: string) {
     return this.productService.remove(Number(id));
   }
+  
 }
