@@ -8,7 +8,7 @@ export class Sale {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => Client)
+    @ManyToOne(() => Client, { eager: true })
     @JoinColumn({name: 'client_id'})
     client: Client;
 

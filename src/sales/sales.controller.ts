@@ -3,7 +3,6 @@ import { Sale } from './sale.entity';
 import { CreateSaleDto } from './create-sale.dto';
 import { SalesService } from './sales.service';
 import { ClientsService } from 'src/clients/clients.service';
-import { Client } from 'src/clients/client.entity';
 import { SaleProduct } from './sale-product.entity';
 import { ProductsService } from 'src/products/products.service';
 
@@ -17,7 +16,7 @@ export class SalesController {
 
     @Get()
     findAll() {
-    return this.salesService.findAll();
+        return this.salesService.findAll();
     }
 
     @Post()
