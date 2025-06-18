@@ -1,5 +1,6 @@
 import { Client } from "src/clients/client.entity";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { SaleProduct } from "./sale-product.entity";
 
 @Entity()
 export class Sale {
@@ -10,5 +11,12 @@ export class Sale {
     @ManyToOne(() => Client)
     @JoinColumn({name: 'client_id'})
     client: Client;
+
+    // mapeamento bidirecional
+    @OneToMany(() => SaleProduct, (saleProduct) => saleProduct.sale, {
+        cascade: true,
+        eager: true // fetch type
+    })
+    products: SaleProduct[];
 
 }

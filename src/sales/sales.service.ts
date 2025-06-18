@@ -11,8 +11,12 @@ export class SalesService {
         private salesRepository: Repository<Sale>
     ){}
 
-    create(sale: Sale) {
-        return this.salesRepository.save(sale);
+    findAll() {
+        return this.salesRepository.find();
+    }
+
+    async create(sale: Sale) {
+        return await this.salesRepository.save(sale);
     }
 
 }
