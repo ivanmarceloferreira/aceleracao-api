@@ -1,6 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
+import { RegisterUserDto } from './register-user.dto';
+import * as bcrypt from 'bcrypt';
 
 @Controller('users')
 export class UsersController {
@@ -24,7 +26,20 @@ export class UsersController {
     }
 
     @Post()
-    create(@Body() user: User) {
+    async create(@Body() userDto: RegisterUserDto) {
+
+        if (!userDto.name || !userDto.email || !userDto.password) {
+            throw new Error('Name, email and password are required.');
+        }
+
+        const user = new User();
+        user.name = userDto.name;
+        user.email = userDto.email;
+
+        // gerar o hash da senha
+        const hashedPassword = await bcrypt.hash(userDto.password, 12);
+        user.password = hashedPassword;
+
         return this.userService.create(user);
     }
 
