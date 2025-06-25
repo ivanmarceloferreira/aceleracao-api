@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { BadRequestException, Body, ConflictException, Controller, Delete, Get, HttpException, HttpStatus, NotFoundException, Param, Post, Put } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
 import { RegisterUserDto } from './register-user.dto';
 import * as bcrypt from 'bcrypt';
+import { use } from 'passport';
 
 @Controller('users')
 export class UsersController {
@@ -16,8 +17,14 @@ export class UsersController {
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.userService.findOne(Number(id));
+    async findOne(@Param('id') id: string) {
+        const user = await this.userService.findOne(Number(id));
+        if (!user) {
+            // exemplo de exceção genérica
+            throw new HttpException('User not found', HttpStatus.SERVICE_UNAVAILABLE);
+        }
+
+        return user;
     }
 
     @Get('/name/:name')
@@ -29,7 +36,12 @@ export class UsersController {
     async create(@Body() userDto: RegisterUserDto) {
 
         if (!userDto.name || !userDto.email || !userDto.password) {
-            throw new Error('Name, email and password are required.');
+            throw new BadRequestException('Name, email and password are required.');
+        }
+
+        const savedUser = await this.userService.findByEmail(userDto.email);
+        if (savedUser) {
+            throw new ConflictException('User email already exists');
         }
 
         const user = new User();

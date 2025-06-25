@@ -18,14 +18,18 @@ export class UsersService {
         return this.userRepository.find();
     }
 
-    findOne(id: number) {
-        return this.userRepository.findOneBy({ id });
+    async findOne(id: number) {
+        return await this.userRepository.findOneBy({ id });
     }
 
     findByName(name: string) {
         return this.userRepository.find({ 
             where: { name: ILike(`%${name}%`) }
         });
+    }
+
+    async findByEmail(email: string) {
+        return await this.userRepository.findOneBy({ email });
     }
 
     async update(id: number, user: User) {
