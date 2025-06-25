@@ -1,11 +1,13 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { Sale } from './sale.entity';
 import { CreateSaleDto } from './create-sale.dto';
 import { SalesService } from './sales.service';
 import { ClientsService } from 'src/clients/clients.service';
 import { SaleProduct } from './sale-product.entity';
 import { ProductsService } from 'src/products/products.service';
+import { AuthGuard } from '@nestjs/passport';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('sales')
 export class SalesController {
 
